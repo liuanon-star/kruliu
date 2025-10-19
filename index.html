@@ -3,88 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML CSS JS ตัวอย่าง</title>
-
+    <title>ระบบสมาชิกตัวอย่าง</title>
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --light: #f8fafc;
+            --text: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #bfdbfe, #1e3a8a);
+            font-family: "Prompt", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
         }
 
-        .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .card {
+            width: min(900px, 95vw);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
         }
 
-        h1 {
-            color: #2c3e50;
+        .card__intro {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 18px;
+            padding: 12px 18px;
         }
 
-        #greeting {
-            font-size: 1.2em;
-            color: #7f8c8d;
-            margin-bottom: 20px;
+        .card__intro h1 {
+            font-size: clamp(2rem, 2.6vw + 1rem, 3rem);
+            margin: 0;
+            color: var(--primary-dark);
         }
 
-        button {
-            background-color: #3498db;
+        .card__intro p {
+            margin: 0;
+            line-height: 1.6;
+            color: #475569;
+            font-size: 1.05rem;
+        }
+
+        .auth-box {
+            background: var(--light);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 16px;
+            padding: 6px;
+            gap: 6px;
+        }
+
+        .auth-tab {
+            border: none;
+            background: transparent;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #475569;
+            transition: all 0.25s ease;
+        }
+
+        .auth-tab.is-active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+        }
+
+        form {
+            display: grid;
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            font-size: 1rem;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(37, 99, 235, 0.6);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .link-button {
+            border: none;
+            background: none;
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 1em;
-            border-radius: 5px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-width: 120px;
         }
 
-        button:hover {
-            background-color: #2980b9;
+        .primary-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 25px rgba(37, 99, 235, 0.2);
+        }
+
+        .message {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .message.is-visible {
+            display: block;
+        }
+
+        .message--success {
+            background: rgba(22, 163, 74, 0.15);
+            border: 1px solid rgba(22, 163, 74, 0.4);
+            color: var(--success);
+        }
+
+        .message--error {
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.4);
+            color: var(--danger);
+        }
+
+        .welcome-box {
+            padding: 18px;
+            border-radius: 16px;
+            background: rgba(37, 99, 235, 0.08);
+            color: #1e293b;
+            display: none;
+        }
+
+        .welcome-box.is-visible {
+            display: block;
+        }
+
+        .welcome-box h2 {
+            margin: 0 0 8px 0;
+            font-size: 1.4rem;
+        }
+
+        .welcome-box p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding: 24px 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
         }
     </style>
-
 </head>
 <body>
+    <main class="card">
+        <section class="card__intro">
+            <h1>สวัสดี 👋<br>เริ่มใช้งานระบบสมาชิกได้เลย</h1>
+            <p>
+                หน้านี้เป็นตัวอย่างการทำระบบเข้าสู่ระบบและสมัครสมาชิกด้วย HTML, CSS และ JavaScript
+                โดยเก็บข้อมูลจำลองไว้ใน Local Storage เพื่อใช้ทดสอบการทำงานแบบพื้นฐาน
+            </p>
+            <div class="welcome-box" id="welcomeBox">
+                <h2 id="welcomeTitle">ยินดีต้อนรับ</h2>
+                <p id="welcomeDescription">กรุณาเข้าสู่ระบบเพื่อดูรายละเอียดสมาชิก</p>
+            </div>
+        </section>
+        <section class="auth-box">
+            <div class="auth-tabs" role="tablist">
+                <button class="auth-tab is-active" id="tabLogin" data-target="login" role="tab" aria-controls="loginForm" aria-selected="true">เข้าสู่ระบบ</button>
+                <button class="auth-tab" id="tabRegister" data-target="register" role="tab" aria-controls="registerForm" aria-selected="false">สมัครสมาชิก</button>
+            </div>
+            <div id="message" class="message" role="alert"></div>
+            <form id="loginForm" autocomplete="on">
+                <div>
+                    <label for="loginEmail">อีเมล</label>
+                    <input type="email" id="loginEmail" name="loginEmail" placeholder="example@email.com" required>
+                </div>
+                <div>
+                    <label for="loginPassword">รหัสผ่าน</label>
+                    <input type="password" id="loginPassword" name="loginPassword" placeholder="รหัสผ่าน" required minlength="6">
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="primary-button">เข้าสู่ระบบ</button>
+                    <button type="button" class="link-button" data-switch="register">ยังไม่มีบัญชี? สมัครใหม่</button>
+                </div>
+            </form>
 
-    <div class="container">
-        <h1>หน้าเว็บง่ายๆ</h1>
-        <p id="greeting">สวัสดีครับ! กดปุ่มข้างล่างเพื่อเปลี่ยนข้อความ</p>
-        <button id="changeTextBtn">เปลี่ยนข้อความ</button>
-    </div>
+            <form id="registerForm" hidden autocomplete="on">
+                <div>
+                    <label for="registerName">ชื่อ-นามสกุล</label>
+                    <input type="text" id="registerName" name="registerName" placeholder="ชื่อเต็มของคุณ" required>
+                </div>
+                <div>
+                    <label for="registerEmail">อีเมล</label>
+                    <input type="email" id="registerEmail" name="registerEmail" placeholder="example@email.com" required>
+                </div>
+                <div>
+                    <label for="registerPassword">รหัสผ่าน</label>
+                    <input type="password" id="registerPassword" name="registerPassword" placeholder="อย่างน้อย 6 ตัวอักษร" minlength="6" required>
+                </div>
+                <div>
+                    <label for="registerConfirm">ยืนยันรหัสผ่าน</label>
+                    <input type="password" id="registerConfirm" name="registerConfirm" placeholder="กรอกรหัสผ่านอีกครั้ง" minlength="6" required>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="primary-button">สร้างบัญชี</button>
+                    <button type="button" class="link-button" data-switch="login">มีบัญชีอยู่แล้ว</button>
+                </div>
+            </form>
+        </section>
+    </main>
 
     <script>
-        // ค้นหาปุ่มและข้อความจาก HTML โดยใช้ ID
-        const button = document.getElementById('changeTextBtn');
-        const greetingParagraph = document.getElementById('greeting');
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const messageBox = document.getElementById('message');
+        const welcomeBox = document.getElementById('welcomeBox');
+        const welcomeTitle = document.getElementById('welcomeTitle');
+        const welcomeDescription = document.getElementById('welcomeDescription');
 
-        // กำหนดข้อความที่จะใช้เปลี่ยน
-        const messages = [
-            'ยินดีต้อนรับสู่โลกของ JavaScript!',
-            'การเขียนโค้ดไม่ยากอย่างที่คิด!',
-            'คุณทำได้แน่นอน!',
-            'มาสร้างเว็บไซต์สนุกๆ กันเถอะ!'
-        ];
+        const STORAGE_KEY = 'demo-users';
 
-        // เพิ่มตัวแปรสำหรับนับจำนวนครั้งที่กดปุ่ม
-        let clickCount = 0;
+        const loadUsers = () => {
+            try {
+                const users = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                return Array.isArray(users) ? users : [];
+            } catch (error) {
+                console.warn('ไม่สามารถอ่านข้อมูลสมาชิกได้', error);
+                return [];
+            }
+        };
 
-        // กำหนดการทำงานเมื่อผู้ใช้กดปุ่ม
-        button.addEventListener('click', function() {
-            // เปลี่ยนข้อความในย่อหน้า (paragraph)
-            // ใช้ตัวดำเนินการ modulo (%) เพื่อวนลูปข้อความ
-            greetingParagraph.textContent = messages[clickCount % messages.length];
+        const saveUsers = (users) => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+        };
 
-            // เพิ่มค่า clickCount เพื่อใช้ในครั้งต่อไป
-            clickCount++;
+        const showMessage = (text, type = 'success') => {
+            messageBox.textContent = text;
+            messageBox.className = `message message--${type} is-visible`;
+        };
+
+        const clearMessage = () => {
+            messageBox.textContent = '';
+            messageBox.className = 'message';
+        };
+
+        const setActiveTab = (tab) => {
+            const isLoginTab = tab === 'login';
+            tabLogin.classList.toggle('is-active', isLoginTab);
+            tabRegister.classList.toggle('is-active', !isLoginTab);
+            tabLogin.setAttribute('aria-selected', isLoginTab);
+            tabRegister.setAttribute('aria-selected', !isLoginTab);
+            loginForm.hidden = !isLoginTab;
+            registerForm.hidden = isLoginTab;
+            clearMessage();
+        };
+
+        const updateWelcomeBox = (user) => {
+            if (!user) {
+                welcomeBox.classList.remove('is-visible');
+                welcomeTitle.textContent = 'ยินดีต้อนรับ';
+                welcomeDescription.textContent = 'กรุณาเข้าสู่ระบบเพื่อดูรายละเอียดสมาชิก';
+                return;
+            }
+
+            welcomeTitle.textContent = `ยินดีต้อนรับคุณ ${user.name}`;
+            welcomeDescription.textContent = `เข้าสู่ระบบด้วยอีเมล ${user.email}`;
+            welcomeBox.classList.add('is-visible');
+        };
+
+        const switchButtons = document.querySelectorAll('[data-switch]');
+        switchButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.switch;
+                setActiveTab(target);
+            });
+        });
+
+        tabLogin.addEventListener('click', () => setActiveTab('login'));
+        tabRegister.addEventListener('click', () => setActiveTab('register'));
+
+        registerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = registerForm.registerName.value.trim();
+            const email = registerForm.registerEmail.value.trim().toLowerCase();
+            const password = registerForm.registerPassword.value;
+            const confirm = registerForm.registerConfirm.value;
+
+            if (!name || !email || !password || !confirm) {
+                showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', 'error');
+                return;
+            }
+
+            if (password !== confirm) {
+                showMessage('ยืนยันรหัสผ่านไม่ตรงกัน', 'error');
+                return;
+            }
+
+            const users = loadUsers();
+            if (users.some((user) => user.email === email)) {
+                showMessage('อีเมลนี้ถูกใช้ไปแล้ว กรุณาเข้าสู่ระบบหรือใช้อีเมลอื่น', 'error');
+                return;
+            }
+
+            const newUser = { name, email, password };
+            users.push(newUser);
+            saveUsers(users);
+
+            registerForm.reset();
+            setActiveTab('login');
+            showMessage('สมัครสมาชิกเรียบร้อย สามารถเข้าสู่ระบบได้ทันที', 'success');
+        });
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const email = loginForm.loginEmail.value.trim().toLowerCase();
+            const password = loginForm.loginPassword.value;
+
+            const users = loadUsers();
+            const matchedUser = users.find((user) => user.email === email && user.password === password);
+
+            if (!matchedUser) {
+                showMessage('ไม่พบข้อมูลบัญชีหรือรหัสผ่านไม่ถูกต้อง', 'error');
+                updateWelcomeBox();
+                return;
+            }
+
+            showMessage('เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับกลับมา', 'success');
+            updateWelcomeBox(matchedUser);
+            loginForm.reset();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const users = loadUsers();
+            if (users.length) {
+                showMessage(`พบสมาชิกที่ลงทะเบียนแล้ว ${users.length} บัญชี`, 'success');
+            }
         });
     </script>
-
 </body>
 </html>
