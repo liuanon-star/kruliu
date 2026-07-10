@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบสมาชิกตัวอย่าง</title>
+    <title>ระบบเก็บคะแนนนักเรียน</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
             --success: #16a34a;
             --danger: #dc2626;
+            --warning: #f59e0b;
             --light: #f8fafc;
             --text: #0f172a;
         }
@@ -21,147 +23,174 @@
         body {
             margin: 0;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background: radial-gradient(circle at top, #bfdbfe, #1e3a8a);
             font-family: "Prompt", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
         }
 
         .card {
-            width: min(900px, 95vw);
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 28px;
-            padding: 24px;
-            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 32px;
-        }
-
-        .card__intro {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 18px;
-            padding: 12px 18px;
-        }
-
-        .card__intro h1 {
-            font-size: clamp(2rem, 2.6vw + 1rem, 3rem);
-            margin: 0;
-            color: var(--primary-dark);
-        }
-
-        .card__intro p {
-            margin: 0;
-            line-height: 1.6;
-            color: #475569;
-            font-size: 1.05rem;
-        }
-
-        .auth-box {
-            background: var(--light);
             border-radius: 20px;
             padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
+            margin-bottom: 24px;
         }
 
-        .auth-tabs {
+        .card h2 {
+            margin: 0 0 20px 0;
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+        }
+
+        .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            background: rgba(148, 163, 184, 0.2);
-            border-radius: 16px;
-            padding: 6px;
-            gap: 6px;
-        }
-
-        .auth-tab {
-            border: none;
-            background: transparent;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #475569;
-            transition: all 0.25s ease;
-        }
-
-        .auth-tab.is-active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
-        }
-
-        form {
-            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
         }
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 6px;
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
 
-        input {
-            width: 100%;
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #475569;
+        }
+
+        input, select {
             padding: 12px 14px;
             border-radius: 12px;
             border: 1px solid rgba(148, 163, 184, 0.5);
             font-size: 1rem;
+            font-family: inherit;
             transition: border 0.2s ease, box-shadow 0.2s ease;
             background: white;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: rgba(37, 99, 235, 0.6);
+            border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
         }
 
-        .form-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .link-button {
-            border: none;
-            background: none;
-            color: var(--primary);
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-
-        .primary-button {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 12px 18px;
+        .btn {
+            padding: 12px 24px;
             border-radius: 12px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            min-width: 120px;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
         }
 
-        .primary-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 16px 25px rgba(37, 99, 235, 0.2);
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #15803d);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #b91c1c);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: var(--primary-dark);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .score-excellent {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .score-good {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .score-average {
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .message {
-            padding: 12px 14px;
+            padding: 12px 16px;
             border-radius: 12px;
-            font-size: 0.95rem;
+            margin-bottom: 16px;
             display: none;
         }
 
@@ -170,241 +199,522 @@
         }
 
         .message--success {
-            background: rgba(22, 163, 74, 0.15);
-            border: 1px solid rgba(22, 163, 74, 0.4);
-            color: var(--success);
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
         }
 
         .message--error {
-            background: rgba(220, 38, 38, 0.15);
-            border: 1px solid rgba(220, 38, 38, 0.4);
-            color: var(--danger);
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
         }
 
-        .welcome-box {
-            padding: 18px;
-            border-radius: 16px;
-            background: rgba(37, 99, 235, 0.08);
-            color: #1e293b;
-            display: none;
+        .message--info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
         }
 
-        .welcome-box.is-visible {
-            display: block;
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
         }
 
-        .welcome-box h2 {
-            margin: 0 0 8px 0;
-            font-size: 1.4rem;
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
         }
 
-        .welcome-box p {
-            margin: 0;
-            line-height: 1.5;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 720px) {
-            body {
-                padding: 24px 12px;
+        .config-section {
+            background: #fef3c7;
+            border: 2px dashed #f59e0b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
             }
-
-            .card {
-                padding: 18px;
+            
+            .form-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <main class="card">
-        <section class="card__intro">
-            <h1>สวัสดี 👋<br>เริ่มใช้งานระบบสมาชิกได้เลย</h1>
-            <p>
-                หน้านี้เป็นตัวอย่างการทำระบบเข้าสู่ระบบและสมัครสมาชิกด้วย HTML, CSS และ JavaScript
-                โดยเก็บข้อมูลจำลองไว้ใน Local Storage เพื่อใช้ทดสอบการทำงานแบบพื้นฐาน
-            </p>
-            <div class="welcome-box" id="welcomeBox">
-                <h2 id="welcomeTitle">ยินดีต้อนรับ</h2>
-                <p id="welcomeDescription">กรุณาเข้าสู่ระบบเพื่อดูรายละเอียดสมาชิก</p>
-            </div>
-        </section>
-        <section class="auth-box">
-            <div class="auth-tabs" role="tablist">
-                <button class="auth-tab is-active" id="tabLogin" data-target="login" role="tab" aria-controls="loginForm" aria-selected="true">เข้าสู่ระบบ</button>
-                <button class="auth-tab" id="tabRegister" data-target="register" role="tab" aria-controls="registerForm" aria-selected="false">สมัครสมาชิก</button>
-            </div>
-            <div id="message" class="message" role="alert"></div>
-            <form id="loginForm" autocomplete="on">
-                <div>
-                    <label for="loginEmail">อีเมล</label>
-                    <input type="email" id="loginEmail" name="loginEmail" placeholder="example@email.com" required>
-                </div>
-                <div>
-                    <label for="loginPassword">รหัสผ่าน</label>
-                    <input type="password" id="loginPassword" name="loginPassword" placeholder="รหัสผ่าน" required minlength="6">
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="primary-button">เข้าสู่ระบบ</button>
-                    <button type="button" class="link-button" data-switch="register">ยังไม่มีบัญชี? สมัครใหม่</button>
-                </div>
-            </form>
+    <div class="container">
+        <header class="header">
+            <h1>📚 ระบบเก็บคะแนนนักเรียน</h1>
+            <p>บันทึกและจัดการคะแนนนักเรียนผ่าน Google Sheet</p>
+        </header>
 
-            <form id="registerForm" hidden autocomplete="on">
-                <div>
-                    <label for="registerName">ชื่อ-นามสกุล</label>
-                    <input type="text" id="registerName" name="registerName" placeholder="ชื่อเต็มของคุณ" required>
+        <!-- การตั้งค่า Google Sheet -->
+        <div class="card config-section">
+            <h2>⚙️ การตั้งค่า Google Sheet</h2>
+            <div id="configMessage" class="message"></div>
+            <form id="configForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="sheetId">Google Sheet ID</label>
+                        <input type="text" id="sheetId" placeholder="ตัวอย่าง: 1BxiMvs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scriptUrl">Google Apps Script Web App URL</label>
+                        <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec" required>
+                    </div>
                 </div>
-                <div>
-                    <label for="registerEmail">อีเมล</label>
-                    <input type="email" id="registerEmail" name="registerEmail" placeholder="example@email.com" required>
-                </div>
-                <div>
-                    <label for="registerPassword">รหัสผ่าน</label>
-                    <input type="password" id="registerPassword" name="registerPassword" placeholder="อย่างน้อย 6 ตัวอักษร" minlength="6" required>
-                </div>
-                <div>
-                    <label for="registerConfirm">ยืนยันรหัสผ่าน</label>
-                    <input type="password" id="registerConfirm" name="registerConfirm" placeholder="กรอกรหัสผ่านอีกครั้ง" minlength="6" required>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="primary-button">สร้างบัญชี</button>
-                    <button type="button" class="link-button" data-switch="login">มีบัญชีอยู่แล้ว</button>
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">บันทึกการตั้งค่า</button>
+                    <button type="button" class="btn btn-warning" onclick="showSetupGuide()">ดูคู่มือติดตั้ง</button>
                 </div>
             </form>
-        </section>
-    </main>
+        </div>
+
+        <!-- เพิ่มคะแนน -->
+        <div class="card">
+            <h2>➕ เพิ่มคะแนนนักเรียน</h2>
+            <div id="addScoreMessage" class="message"></div>
+            <form id="addScoreForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="studentName">ชื่อนักเรียน</label>
+                        <input type="text" id="studentName" placeholder="ชื่อ-นามสกุล" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">รหัสนักเรียน</label>
+                        <input type="text" id="studentId" placeholder="รหัสประจำตัว" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">วิชา</label>
+                        <input type="text" id="subject" placeholder="ชื่อวิชา" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="score">คะแนน (0-100)</label>
+                        <input type="number" id="score" min="0" max="100" placeholder="0" required>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn btn-success">
+                        <span id="saveBtnText">💾 บันทึกคะแนน</span>
+                        <span id="saveBtnLoading" class="loading" style="display:none;"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- แสดงข้อมูล -->
+        <div class="card">
+            <h2>📊 ข้อมูลคะแนน</h2>
+            <div id="dataMessage" class="message"></div>
+            <div class="actions">
+                <button type="button" class="btn btn-primary" onclick="loadScores()">🔄 โหลดข้อมูล</button>
+                <button type="button" class="btn btn-warning" onclick="clearAllData()">🗑️ ล้างข้อมูลทั้งหมด</button>
+            </div>
+            
+            <div class="stats-grid" id="statsGrid" style="display:none;">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalStudents">0</div>
+                    <div class="stat-label">จำนวนนักเรียน</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalScores">0</div>
+                    <div class="stat-label">จำนวนคะแนน</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgScore">0</div>
+                    <div class="stat-label">คะแนนเฉลี่ย</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="highestScore">0</div>
+                    <div class="stat-label">คะแนนสูงสุด</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="scoresTable">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>รหัสนักเรียน</th>
+                            <th>ชื่อนักเรียน</th>
+                            <th>วิชา</th>
+                            <th>คะแนน</th>
+                            <th>เกรด</th>
+                            <th>วันที่บันทึก</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoresBody">
+                        <tr>
+                            <td colspan="8" style="text-align:center;color:#64748b;">ยังไม่มีข้อมูล กรุณาโหลดข้อมูลหรือเพิ่มคะแนนใหม่</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const tabLogin = document.getElementById('tabLogin');
-        const tabRegister = document.getElementById('tabRegister');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const messageBox = document.getElementById('message');
-        const welcomeBox = document.getElementById('welcomeBox');
-        const welcomeTitle = document.getElementById('welcomeTitle');
-        const welcomeDescription = document.getElementById('welcomeDescription');
+        // เก็บการตั้งค่า
+        const CONFIG_KEY = 'student_score_config';
+        
+        // โหลดการตั้งค่า
+        function loadConfig() {
+            const config = localStorage.getItem(CONFIG_KEY);
+            if (config) {
+                const parsed = JSON.parse(config);
+                document.getElementById('sheetId').value = parsed.sheetId || '';
+                document.getElementById('scriptUrl').value = parsed.scriptUrl || '';
+                return parsed;
+            }
+            return null;
+        }
 
-        const STORAGE_KEY = 'demo-users';
+        // บันทึกการตั้งค่า
+        function saveConfig(sheetId, scriptUrl) {
+            localStorage.setItem(CONFIG_KEY, JSON.stringify({ sheetId, scriptUrl }));
+        }
 
-        const loadUsers = () => {
+        // แสดงข้อความ
+        function showMessage(elementId, text, type = 'info') {
+            const el = document.getElementById(elementId);
+            el.textContent = text;
+            el.className = `message message--${type} is-visible`;
+            setTimeout(() => {
+                el.classList.remove('is-visible');
+            }, 5000);
+        }
+
+        // คำนวณเกรด
+        function calculateGrade(score) {
+            if (score >= 80) return 'A';
+            if (score >= 70) return 'B';
+            if (score >= 60) return 'C';
+            if (score >= 50) return 'D';
+            return 'F';
+        }
+
+        // ได้คลาสสีของคะแนน
+        function getScoreClass(score) {
+            if (score >= 80) return 'score-excellent';
+            if (score >= 50) return 'score-good';
+            return 'score-average';
+        }
+
+        // บันทึกการตั้งค่า
+        document.getElementById('configForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const sheetId = document.getElementById('sheetId').value.trim();
+            const scriptUrl = document.getElementById('scriptUrl').value.trim();
+            
+            if (!sheetId || !scriptUrl) {
+                showMessage('configMessage', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+                return;
+            }
+            
+            saveConfig(sheetId, scriptUrl);
+            showMessage('configMessage', 'บันทึกการตั้งค่าเรียบร้อย!', 'success');
+        });
+
+        // เพิ่มคะแนน
+        document.getElementById('addScoreForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const config = loadConfig();
+            if (!config || !config.scriptUrl) {
+                showMessage('addScoreMessage', 'กรุณาตั้งค่า Google Sheet และ Script URL ก่อนใช้งาน', 'error');
+                return;
+            }
+
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const score = parseInt(document.getElementById('score').value);
+
+            if (score < 0 || score > 100) {
+                showMessage('addScoreMessage', 'คะแนนต้องอยู่ระหว่าง 0-100', 'error');
+                return;
+            }
+
+            const btnText = document.getElementById('saveBtnText');
+            const btnLoading = document.getElementById('saveBtnLoading');
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-block';
+
             try {
-                const users = JSON.parse(localStorage.getItem(STORAGE_KEY));
-                return Array.isArray(users) ? users : [];
+                const response = await fetch(config.scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'add',
+                        data: {
+                            studentName,
+                            studentId,
+                            subject,
+                            score,
+                            timestamp: new Date().toISOString()
+                        }
+                    })
+                });
+
+                showMessage('addScoreMessage', 'บันทึกคะแนนเรียบร้อย!', 'success');
+                document.getElementById('addScoreForm').reset();
+                loadScores();
             } catch (error) {
-                console.warn('ไม่สามารถอ่านข้อมูลสมาชิกได้', error);
-                return [];
+                showMessage('addScoreMessage', 'เกิดข้อผิดพลาดในการบันทึก: ' + error.message, 'error');
+            } finally {
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
             }
-        };
-
-        const saveUsers = (users) => {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-        };
-
-        const showMessage = (text, type = 'success') => {
-            messageBox.textContent = text;
-            messageBox.className = `message message--${type} is-visible`;
-        };
-
-        const clearMessage = () => {
-            messageBox.textContent = '';
-            messageBox.className = 'message';
-        };
-
-        const setActiveTab = (tab) => {
-            const isLoginTab = tab === 'login';
-            tabLogin.classList.toggle('is-active', isLoginTab);
-            tabRegister.classList.toggle('is-active', !isLoginTab);
-            tabLogin.setAttribute('aria-selected', isLoginTab);
-            tabRegister.setAttribute('aria-selected', !isLoginTab);
-            loginForm.hidden = !isLoginTab;
-            registerForm.hidden = isLoginTab;
-            clearMessage();
-        };
-
-        const updateWelcomeBox = (user) => {
-            if (!user) {
-                welcomeBox.classList.remove('is-visible');
-                welcomeTitle.textContent = 'ยินดีต้อนรับ';
-                welcomeDescription.textContent = 'กรุณาเข้าสู่ระบบเพื่อดูรายละเอียดสมาชิก';
-                return;
-            }
-
-            welcomeTitle.textContent = `ยินดีต้อนรับคุณ ${user.name}`;
-            welcomeDescription.textContent = `เข้าสู่ระบบด้วยอีเมล ${user.email}`;
-            welcomeBox.classList.add('is-visible');
-        };
-
-        const switchButtons = document.querySelectorAll('[data-switch]');
-        switchButtons.forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const target = btn.dataset.switch;
-                setActiveTab(target);
-            });
         });
 
-        tabLogin.addEventListener('click', () => setActiveTab('login'));
-        tabRegister.addEventListener('click', () => setActiveTab('register'));
-
-        registerForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const name = registerForm.registerName.value.trim();
-            const email = registerForm.registerEmail.value.trim().toLowerCase();
-            const password = registerForm.registerPassword.value;
-            const confirm = registerForm.registerConfirm.value;
-
-            if (!name || !email || !password || !confirm) {
-                showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+        // โหลดข้อมูล
+        async function loadScores() {
+            const config = loadConfig();
+            if (!config || !config.scriptUrl) {
+                showMessage('dataMessage', 'กรุณาตั้งค่า Google Sheet และ Script URL ก่อนใช้งาน', 'error');
                 return;
             }
 
-            if (password.length < 6) {
-                showMessage('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', 'error');
+            showMessage('dataMessage', 'กำลังโหลดข้อมูล...', 'info');
+
+            try {
+                const response = await fetch(config.scriptUrl + '?action=get');
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    renderScores(result.data);
+                    updateStats(result.data);
+                    showMessage('dataMessage', `โหลดข้อมูลสำเร็จ! พบ ${result.data.length} รายการ`, 'success');
+                } else {
+                    showMessage('dataMessage', 'ไม่พบข้อมูลหรือเกิดข้อผิดพลาด', 'error');
+                }
+            } catch (error) {
+                showMessage('dataMessage', 'เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message, 'error');
+            }
+        }
+
+        // แสดงตารางคะแนน
+        function renderScores(data) {
+            const tbody = document.getElementById('scoresBody');
+            
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#64748b;">ยังไม่มีข้อมูล</td></tr>';
                 return;
             }
 
-            if (password !== confirm) {
-                showMessage('ยืนยันรหัสผ่านไม่ตรงกัน', 'error');
+            tbody.innerHTML = data.map((item, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${escapeHtml(item.studentId)}</td>
+                    <td>${escapeHtml(item.studentName)}</td>
+                    <td>${escapeHtml(item.subject)}</td>
+                    <td><span class="score-badge ${getScoreClass(item.score)}">${item.score}</span></td>
+                    <td>${calculateGrade(item.score)}</td>
+                    <td>${formatDate(item.timestamp)}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding:6px 12px;font-size:0.85rem;" onclick="deleteScore(${index})">ลบ</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // อัพเดทสถิติ
+        function updateStats(data) {
+            document.getElementById('statsGrid').style.display = 'grid';
+            
+            const students = [...new Set(data.map(item => item.studentId))];
+            const scores = data.map(item => item.score);
+            const avgScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 0;
+            const highestScore = scores.length > 0 ? Math.max(...scores) : 0;
+
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('totalScores').textContent = data.length;
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('highestScore').textContent = highestScore;
+        }
+
+        // ลบคะแนน
+        async function deleteScore(index) {
+            if (!confirm('คุณต้องการลบรายการนี้ใช่หรือไม่?')) return;
+
+            const config = loadConfig();
+            if (!config || !config.scriptUrl) {
+                showMessage('dataMessage', 'กรุณาตั้งค่าก่อนใช้งาน', 'error');
                 return;
             }
 
-            const users = loadUsers();
-            if (users.some((user) => user.email === email)) {
-                showMessage('อีเมลนี้ถูกใช้ไปแล้ว กรุณาเข้าสู่ระบบหรือใช้อีเมลอื่น', 'error');
+            try {
+                const response = await fetch(config.scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'delete',
+                        index: index + 2 // +2 เพราะแถวแรกเป็น header และ index เริ่มจาก 0
+                    })
+                });
+
+                showMessage('dataMessage', 'ลบข้อมูลเรียบร้อย', 'success');
+                loadScores();
+            } catch (error) {
+                showMessage('dataMessage', 'เกิดข้อผิดพลาดในการลบ: ' + error.message, 'error');
+            }
+        }
+
+        // ล้างข้อมูลทั้งหมด
+        async function clearAllData() {
+            if (!confirm('คุณต้องการลบข้อมูลทั้งหมดใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้!')) return;
+
+            const config = loadConfig();
+            if (!config || !config.scriptUrl) {
+                showMessage('dataMessage', 'กรุณาตั้งค่าก่อนใช้งาน', 'error');
                 return;
             }
 
-            const newUser = { name, email, password };
-            users.push(newUser);
-            saveUsers(users);
+            try {
+                const response = await fetch(config.scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'clear'
+                    })
+                });
 
-            registerForm.reset();
-            setActiveTab('login');
-            showMessage('สมัครสมาชิกเรียบร้อย สามารถเข้าสู่ระบบได้ทันที', 'success');
-        });
-
-        loginForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const email = loginForm.loginEmail.value.trim().toLowerCase();
-            const password = loginForm.loginPassword.value;
-
-            const users = loadUsers();
-            const matchedUser = users.find((user) => user.email === email && user.password === password);
-
-            if (!matchedUser) {
-                showMessage('ไม่พบข้อมูลบัญชีหรือรหัสผ่านไม่ถูกต้อง', 'error');
-                updateWelcomeBox();
-                return;
+                showMessage('dataMessage', 'ล้างข้อมูลทั้งหมดเรียบร้อย', 'success');
+                loadScores();
+            } catch (error) {
+                showMessage('dataMessage', 'เกิดข้อผิดพลาด: ' + error.message, 'error');
             }
+        }
 
-            showMessage('เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับกลับมา', 'success');
-            updateWelcomeBox(matchedUser);
-            loginForm.reset();
-        });
+        // ฟังก์ชันช่วย
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const date = new Date(timestamp);
+            return date.toLocaleString('th-TH');
+        }
+
+        function showSetupGuide() {
+            alert(`📖 คู่มือติดตั้ง Google Apps Script
+
+1. สร้าง Google Sheet ใหม่
+2. ตั้งค่าหัวตารางในแถวแรก:
+   - A1: วันที่บันทึก
+   - B1: รหัสนักเรียน
+   - C1: ชื่อนักเรียน
+   - D1: วิชา
+   - E1: คะแนน
+
+3. ไปที่ ส่วนขยาย > Apps Script
+4. วางโค้ดต่อไปนี้:
+
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var result = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    result.push({
+      timestamp: data[i][0],
+      studentId: data[i][1],
+      studentName: data[i][2],
+      subject: data[i][3],
+      score: data[i][4]
+    });
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({success: true, data: result}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  if (data.action === 'add') {
+    sheet.appendRow([
+      data.data.timestamp,
+      data.data.studentId,
+      data.data.studentName,
+      data.data.subject,
+      data.data.score
+    ]);
+  } else if (data.action === 'delete') {
+    sheet.deleteRow(data.index);
+  } else if (data.action === 'clear') {
+    sheet.clearContents();
+    sheet.appendRow(['วันที่บันทึก', 'รหัสนักเรียน', 'ชื่อนักเรียน', 'วิชา', 'คะแนน']);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({success: true}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+5. กด Deploy > New Deployment
+6. เลือกประเภทเป็น Web App
+7. ตั้งค่า Execute as: Me
+8. ตั้งค่า Who has access: Anyone
+9. กด Deploy และคัดลอก URL
+10. นำ Sheet ID และ URL มาใส่ในฟอร์มด้านบน`);
+        }
+
+        // โหลดการตั้งค่าเมื่อเปิดหน้า
         document.addEventListener('DOMContentLoaded', () => {
-            const users = loadUsers();
-            if (users.length) {
-                showMessage(`พบสมาชิกที่ลงทะเบียนแล้ว ${users.length} บัญชี`, 'success');
-            }
+            loadConfig();
         });
     </script>
 </body>
