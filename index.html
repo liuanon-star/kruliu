@@ -3,346 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="พื้นที่เล็ก ๆ สำหรับจุดประกายไอเดียและเริ่มต้นเขียนโค้ดในทุกวัน">
-    <title>CodeBloom — เปลี่ยนไอเดียให้เป็นจริง</title>
+    <meta name="description" content="เว็บไซต์เรียบง่าย สะอาดตา อ่านสบาย">
+    <title>เรียบง่าย — เว็บไซต์ที่สบายตา</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f4f4ef;
-            --surface: rgba(255, 255, 252, .74);
-            --surface-solid: #fffffc;
-            --text: #17231d;
-            --muted: #647069;
-            --line: rgba(23, 35, 29, .12);
-            --green: #1f9d65;
-            --green-dark: #137448;
-            --lime: #c9f067;
-            --orange: #ff8a55;
-            --shadow: 0 24px 70px rgba(38, 64, 49, .13);
+            --bg: #fafaf8;
+            --text: #1c1c1a;
+            --muted: #6b6b66;
+            --line: #e6e6e1;
+            --accent: #2f6f4f;
         }
 
-        body.dark {
-            --bg: #0e1712;
-            --surface: rgba(24, 36, 29, .78);
-            --surface-solid: #18241d;
-            --text: #f3f7f2;
-            --muted: #a1aea6;
-            --line: rgba(255,255,255,.12);
-            --shadow: 0 24px 80px rgba(0,0,0,.32);
-        }
+        * { box-sizing: border-box; margin: 0; }
 
-        * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+
         body {
-            margin: 0;
-            min-height: 100vh;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 8% 10%, rgba(201, 240, 103, .26), transparent 26rem),
-                radial-gradient(circle at 93% 85%, rgba(255, 138, 85, .18), transparent 28rem),
-                var(--bg);
             font-family: "Prompt", sans-serif;
-            transition: color .3s ease, background-color .3s ease;
-            overflow-x: hidden;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: .35;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
-            z-index: -1;
+        .wrap {
+            width: min(640px, 100% - 48px);
+            margin: 0 auto;
         }
 
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(1px);
-            z-index: -1;
-            animation: float 9s ease-in-out infinite;
+        header {
+            padding: 28px 0;
+            border-bottom: 1px solid var(--line);
         }
-        .orb.one { width: 18px; height: 18px; background: var(--orange); left: 7%; top: 36%; }
-        .orb.two { width: 11px; height: 11px; background: var(--green); right: 8%; top: 25%; animation-delay: -3s; }
-        .orb.three { width: 42px; height: 42px; border: 1px solid var(--line); right: 3%; bottom: 15%; animation-delay: -5s; }
-        @keyframes float { 50% { transform: translateY(-18px) rotate(120deg); } }
 
-        .page { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
-        nav {
-            height: 92px;
+        header .wrap {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .brand { display: flex; align-items: center; gap: 11px; font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; }
-        .brand-mark {
-            width: 38px; height: 38px; border-radius: 12px;
-            display: grid; place-items: center;
-            color: white; background: var(--green);
-            box-shadow: 0 8px 20px rgba(31,157,101,.25);
-        }
-        .brand-mark svg { width: 21px; }
-        .nav-right { display: flex; align-items: center; gap: 26px; }
-        .nav-link { color: var(--muted); text-decoration: none; font-size: .88rem; transition: color .2s; }
-        .nav-link:hover { color: var(--green); }
-        .theme-toggle {
-            width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line);
-            color: var(--text); background: var(--surface); cursor: pointer;
-            display: grid; place-items: center; transition: transform .2s, background .2s;
-        }
-        .theme-toggle:hover { transform: rotate(12deg); background: var(--surface-solid); }
-        .theme-toggle svg { width: 19px; }
 
-        main { padding: 72px 0 90px; }
-        .hero {
-            display: grid;
-            grid-template-columns: 1.08fr .92fr;
-            align-items: center;
-            gap: clamp(42px, 7vw, 100px);
+        .logo {
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text);
         }
-        .eyebrow {
-            display: inline-flex; align-items: center; gap: 9px;
-            padding: 8px 13px 8px 9px; border: 1px solid var(--line); border-radius: 999px;
-            color: var(--muted); background: var(--surface); backdrop-filter: blur(12px);
-            font-size: .78rem; font-weight: 500; margin-bottom: 24px;
-        }
-        .eyebrow-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--lime); display: grid; place-items: center; color: #25451d; }
-        .eyebrow-dot svg { width: 12px; }
-        h1 {
-            margin: 0;
-            font-size: clamp(3.2rem, 6.2vw, 6rem);
-            line-height: .98;
-            letter-spacing: -.065em;
-            font-weight: 700;
-        }
-        h1 .accent { color: var(--green); position: relative; display: inline-block; }
-        h1 .accent::after {
-            content: ""; position: absolute; left: 3%; right: -2%; bottom: -8px; height: 11px;
-            background: var(--lime); border-radius: 50%; z-index: -1; transform: rotate(-1.5deg);
-        }
-        .lead { max-width: 580px; color: var(--muted); font-size: 1.05rem; line-height: 1.85; margin: 30px 0 32px; font-weight: 300; }
-        .action-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .primary-btn {
-            border: 0; border-radius: 16px; padding: 7px 8px 7px 22px;
-            display: inline-flex; gap: 19px; align-items: center;
-            color: white; background: var(--text); font: 500 .93rem "Prompt", sans-serif;
-            cursor: pointer; box-shadow: 0 12px 28px rgba(23,35,29,.18);
-            transition: transform .2s, box-shadow .2s;
-        }
-        body.dark .primary-btn { background: var(--green); }
-        .primary-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(23,35,29,.24); }
-        .primary-btn:active { transform: translateY(0); }
-        .btn-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--green); }
-        body.dark .btn-icon { background: rgba(0,0,0,.22); }
-        .btn-icon svg { width: 18px; transition: transform .25s; }
-        .primary-btn:hover .btn-icon svg { transform: translateX(3px); }
-        .micro-copy { color: var(--muted); font-size: .75rem; line-height: 1.45; }
-        .micro-copy strong { color: var(--text); display: block; font-size: .86rem; font-weight: 500; }
 
-        .visual { position: relative; min-height: 510px; display: grid; place-items: center; }
-        .visual::before {
-            content: ""; position: absolute; width: 390px; height: 390px; border-radius: 50%;
-            background: var(--lime); opacity: .48; filter: blur(1px);
-        }
-        .code-card {
-            width: min(100%, 440px); position: relative; z-index: 2;
-            border: 1px solid rgba(255,255,255,.13); border-radius: 26px; overflow: hidden;
-            background: #15241c; color: #eaf1ec; box-shadow: 0 34px 80px rgba(25,54,38,.28);
-            transform: rotate(2deg); transition: transform .35s ease;
-        }
-        .code-card:hover { transform: rotate(0) translateY(-6px); }
-        .card-top { height: 58px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); }
-        .dots { display: flex; gap: 7px; }
-        .dots i { width: 8px; height: 8px; border-radius: 50%; background: #ff735b; }
-        .dots i:nth-child(2) { background: #ffc85a; }
-        .dots i:nth-child(3) { background: #7edc76; }
-        .file-name { color: #809087; font: 500 .67rem "IBM Plex Mono", monospace; }
-        .code { padding: 30px 28px 35px; font: 500 clamp(.73rem, 1.2vw, .84rem)/2 "IBM Plex Mono", monospace; }
-        .line { display: flex; gap: 17px; white-space: nowrap; }
-        .num { width: 14px; color: #4e6156; user-select: none; text-align: right; }
-        .pink { color: #ff8ca1; } .yellow { color: #e9db89; } .cyan { color: #86dbca; } .soft { color: #9baba2; } .white { color: #eef3ef; }
-        .quote-card {
-            position: absolute; z-index: 3; left: -20px; bottom: 5px; width: 260px;
-            padding: 20px; border-radius: 19px; border: 1px solid var(--line);
-            color: var(--text); background: var(--surface-solid); box-shadow: var(--shadow);
-            transform: rotate(-3deg); transition: transform .3s;
-        }
-        .quote-card.bump { animation: bump .4s ease; }
-        @keyframes bump { 50% { transform: rotate(-3deg) scale(1.06); } }
-        .quote-label { color: var(--green); font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-        #greeting { min-height: 52px; margin: 10px 0 13px; font-size: .93rem; line-height: 1.65; font-weight: 500; transition: opacity .18s; }
-        .progress { display: flex; gap: 5px; }
-        .progress span { width: 17px; height: 4px; border-radius: 9px; background: var(--line); transition: width .25s, background .25s; }
-        .progress span.active { width: 30px; background: var(--orange); }
-        .badge {
-            position: absolute; right: -12px; top: 22px; z-index: 4; width: 92px; height: 92px; border-radius: 50%;
-            background: var(--orange); color: white; display: grid; place-items: center; text-align: center;
-            font-size: .68rem; font-weight: 600; line-height: 1.35; transform: rotate(10deg);
-            box-shadow: 0 15px 30px rgba(255,138,85,.28);
-        }
-        .badge::before { content: "✦"; display: block; font-size: 1rem; }
+        .logo span { color: var(--accent); }
 
-        .trust-row { margin-top: 92px; padding-top: 25px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 28px; align-items: center; }
-        .trust-title { color: var(--muted); font-size: .78rem; line-height: 1.6; }
-        .stat { border-left: 1px solid var(--line); padding-left: 25px; }
-        .stat strong { display: block; color: var(--text); font-size: 1.2rem; letter-spacing: -.03em; }
-        .stat span { color: var(--muted); font-size: .72rem; }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .9rem;
+            margin-left: 22px;
+            transition: color .2s;
+        }
 
-        .toast {
-            position: fixed; left: 50%; bottom: 24px; z-index: 10; transform: translate(-50%, 30px);
-            padding: 11px 17px; border-radius: 999px; color: white; background: #17231d;
-            font-size: .78rem; opacity: 0; pointer-events: none; transition: .3s ease;
-            box-shadow: 0 12px 30px rgba(0,0,0,.2);
-        }
-        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        nav a:hover { color: var(--accent); }
 
-        @media (max-width: 900px) {
-            main { padding-top: 42px; }
-            .hero { grid-template-columns: 1fr; }
-            .hero-copy { text-align: center; }
-            .lead { margin-left: auto; margin-right: auto; }
-            .action-row { justify-content: center; }
-            .visual { min-height: 490px; width: min(530px, 100%); margin: 0 auto; }
-            .trust-row { margin-top: 55px; grid-template-columns: repeat(3, 1fr); }
-            .trust-title { grid-column: 1/-1; text-align: center; }
+        main { padding: 88px 0 96px; }
+
+        .hero h1 {
+            font-size: clamp(1.9rem, 5vw, 2.6rem);
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: -.01em;
         }
-        @media (max-width: 600px) {
-            .page { width: min(100% - 28px, 1180px); }
-            nav { height: 74px; }
-            .nav-link { display: none; }
-            .nav-right { gap: 10px; }
-            main { padding-top: 35px; }
-            h1 { font-size: clamp(2.85rem, 15vw, 4rem); }
-            .lead { font-size: .94rem; margin-top: 25px; }
-            .visual { min-height: 430px; margin-top: -5px; }
-            .visual::before { width: 300px; height: 300px; }
-            .code-card { border-radius: 21px; }
-            .code { padding: 22px 12px; font-size: .65rem; }
-            .line { gap: 9px; }
-            .quote-card { left: -2px; bottom: -5px; width: 230px; padding: 16px; }
-            .badge { width: 72px; height: 72px; right: -4px; top: 8px; font-size: .58rem; }
-            .trust-row { grid-template-columns: 1fr; gap: 15px; margin-top: 52px; }
-            .trust-title { text-align: left; }
-            .stat { padding: 10px 0 10px 18px; }
+
+        .hero p {
+            margin-top: 18px;
+            color: var(--muted);
+            font-weight: 300;
+            font-size: 1.05rem;
         }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+
+        .btn {
+            display: inline-block;
+            margin-top: 32px;
+            padding: 12px 28px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            font-size: .95rem;
+            transition: opacity .2s;
+        }
+
+        .btn:hover { opacity: .85; }
+
+        section { margin-top: 88px; }
+
+        h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .list { display: grid; gap: 16px; }
+
+        .item {
+            padding: 20px 22px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .item h3 { font-size: 1rem; font-weight: 500; }
+
+        .item p {
+            font-size: .92rem;
+            color: var(--muted);
+            font-weight: 300;
+            margin-top: 4px;
+        }
+
+        .about p { color: var(--muted); font-weight: 300; }
+
+        .contact a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 26px 0;
+            font-size: .85rem;
+            color: var(--muted);
+            font-weight: 300;
         }
     </style>
 </head>
 <body>
-    <div class="orb one"></div><div class="orb two"></div><div class="orb three"></div>
-    <div class="page">
-        <nav aria-label="เมนูหลัก">
-            <div class="brand">
-                <span class="brand-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 9 4 12l4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>
-                </span>
-                CodeBloom
-            </div>
-            <div class="nav-right">
-                <a class="nav-link" href="#inspire">แรงบันดาลใจ</a>
-                <a class="nav-link" href="#about">เกี่ยวกับเรา</a>
-                <button class="theme-toggle" id="themeToggle" type="button" aria-label="สลับโหมดสี" title="สลับโหมดสี">
-                    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.64 5.64l1.42 1.42M16.94 16.94l1.42 1.42M18.36 5.64l-1.42 1.42M7.06 16.94l-1.42 1.42"/><circle cx="12" cy="12" r="4"/></svg>
-                </button>
-            </div>
-        </nav>
 
-        <main>
-            <section class="hero" id="inspire">
-                <div class="hero-copy">
-                    <div class="eyebrow"><span class="eyebrow-dot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9L12 2Z"/></svg></span> ไอเดียใหม่สำหรับคุณทุกวัน</div>
-                    <h1>เริ่มเขียน<br><span class="accent">อนาคต</span> ของคุณ</h1>
-                    <p class="lead">ทุกโปรเจกต์ที่ยิ่งใหญ่ เริ่มจากโค้ดบรรทัดแรกเสมอ ให้พื้นที่เล็ก ๆ แห่งนี้ช่วยจุดประกายไอเดีย และพาคุณก้าวต่อไปอย่างมั่นใจ</p>
-                    <div class="action-row">
-                        <button class="primary-btn" id="changeTextBtn" type="button">
-                            สร้างแรงบันดาลใจ
-                            <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-                        </button>
-                        <div class="micro-copy"><strong>กดเพื่อรับพลังบวก</strong>สุ่มข้อความใหม่ได้ไม่จำกัด</div>
-                    </div>
+    <header>
+        <div class="wrap">
+            <a class="logo" href="#">เรียบ<span>ง่าย</span></a>
+            <nav>
+                <a href="#about">เกี่ยวกับ</a>
+                <a href="#work">ผลงาน</a>
+                <a href="#contact">ติดต่อ</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="wrap">
+
+        <div class="hero">
+            <h1>สวัสดีครับ 👋<br>นี่คือเว็บไซต์ที่เรียบง่ายและสบายตา</h1>
+            <p>บางครั้งสิ่งที่ดีที่สุดก็คือสิ่งที่เรียบง่ายที่สุด — ไม่ต้องมีอะไรมาก แค่ชัดเจน อ่านง่าย และตรงประเด็น</p>
+            <a class="btn" href="#about">เริ่มเลย</a>
+        </div>
+
+        <section id="about" class="about">
+            <h2>เกี่ยวกับ</h2>
+            <p>เว็บไซต์นี้ถูกออกแบบด้วยแนวคิด "น้อยแต่มาก" ใช้เพียง HTML และ CSS ล้วน ๆ ไม่มี JavaScript ไม่มีสิ่งรบกวน โหลดเร็ว และใช้งานได้ดีบนทุกอุปกรณ์</p>
+        </section>
+
+        <section id="work">
+            <h2>ผลงาน</h2>
+            <div class="list">
+                <div class="item">
+                    <h3>โปรเจกต์แรก</h3>
+                    <p>คำอธิบายสั้น ๆ เกี่ยวกับผลงานชิ้นนี้ แก้ไขข้อความได้ตามต้องการ</p>
                 </div>
-
-                <div class="visual" aria-label="ตัวอย่างโค้ดและข้อความสร้างแรงบันดาลใจ">
-                    <div class="code-card">
-                        <div class="card-top"><div class="dots"><i></i><i></i><i></i></div><span class="file-name">my-future.js</span></div>
-                        <div class="code" aria-hidden="true">
-                            <div class="line"><span class="num">1</span><span><b class="pink">const</b> <b class="cyan">dream</b> <span class="soft">=</span> <b class="yellow">"สิ่งที่อยากสร้าง"</b><span class="white">;</span></span></div>
-                            <div class="line"><span class="num">2</span><span><b class="pink">let</b> <b class="cyan">courage</b> <span class="soft">=</span> <b class="white">100</b><span class="white">;</span></span></div>
-                            <div class="line"><span class="num">3</span><span>&nbsp;</span></div>
-                            <div class="line"><span class="num">4</span><span><b class="pink">function</b> <b class="yellow">startToday</b><span class="white">() {</span></span></div>
-                            <div class="line"><span class="num">5</span><span>&nbsp;&nbsp;<b class="pink">return</b> <b class="yellow">"ลงมือทำ"</b><span class="white">;</span></span></div>
-                            <div class="line"><span class="num">6</span><span class="white">}</span></div>
-                            <div class="line"><span class="num">7</span><span>&nbsp;</span></div>
-                            <div class="line"><span class="num">8</span><span><b class="cyan">startToday</b><span class="white">();</span></span></div>
-                        </div>
-                    </div>
-                    <div class="badge">สร้างสิ่งดี ๆ<br>ไปด้วยกัน</div>
-                    <div class="quote-card">
-                        <div class="quote-label">Daily spark</div>
-                        <p id="greeting" aria-live="polite">“ความสำเร็จ เริ่มต้นจากการกล้าที่จะลอง”</p>
-                        <div class="progress" id="progress" aria-hidden="true"><span class="active"></span><span></span><span></span><span></span><span></span></div>
-                    </div>
+                <div class="item">
+                    <h3>โปรเจกต์ที่สอง</h3>
+                    <p>อีกหนึ่งผลงานที่น่าภูมิใจ ใส่รายละเอียดเพิ่มเติมได้ที่นี่</p>
                 </div>
-            </section>
+                <div class="item">
+                    <h3>โปรเจกต์ที่สาม</h3>
+                    <p>พื้นที่สำหรับผลงานชิ้นถัดไปของคุณ</p>
+                </div>
+            </div>
+        </section>
 
-            <section class="trust-row" id="about" aria-label="สถิติแรงบันดาลใจ">
-                <div class="trust-title">เพราะเราเชื่อว่า ทุกคน<br>สร้างสิ่งที่ยอดเยี่ยมได้</div>
-                <div class="stat"><strong>1% ทุกวัน</strong><span>เก่งขึ้นทีละนิด</span></div>
-                <div class="stat"><strong>∞ ไอเดีย</strong><span>ไม่มีขีดจำกัด</span></div>
-                <div class="stat"><strong>วันนี้</strong><span>คือเวลาที่ดีที่สุด</span></div>
-            </section>
-        </main>
-    </div>
-    <div class="toast" id="toast" role="status">เติมพลังให้คุณแล้ว ✦</div>
+        <section id="contact" class="contact">
+            <h2>ติดต่อ</h2>
+            <p>สนใจพูดคุยหรือร่วมงานกัน ส่งอีเมลมาได้ที่ <a href="mailto:hello@example.com">hello@example.com</a></p>
+        </section>
 
-    <script>
-        const button = document.getElementById('changeTextBtn');
-        const greeting = document.getElementById('greeting');
-        const quoteCard = document.querySelector('.quote-card');
-        const progressDots = [...document.querySelectorAll('#progress span')];
-        const toast = document.getElementById('toast');
-        const themeToggle = document.getElementById('themeToggle');
+    </main>
 
-        const messages = [
-            '“ความสำเร็จ เริ่มต้นจากการกล้าที่จะลอง”',
-            '“โค้ดทุกบรรทัด กำลังพาคุณเข้าใกล้ความฝัน”',
-            '“ไม่ต้องสมบูรณ์แบบ แค่ดีกว่าเมื่อวานก็พอ”',
-            '“ปัญหาที่ยาก คือโอกาสให้เราได้เติบโต”',
-            '“ไอเดียจะมีคุณค่า เมื่อเราเริ่มลงมือทำ”'
-        ];
-        let current = 0;
-        let toastTimer;
+    <footer>
+        <div class="wrap">© 2026 เรียบง่าย — สร้างด้วยใจ</div>
+    </footer>
 
-        button.addEventListener('click', () => {
-            current = (current + 1) % messages.length;
-            greeting.style.opacity = '0';
-            setTimeout(() => {
-                greeting.textContent = messages[current];
-                greeting.style.opacity = '1';
-            }, 170);
-            progressDots.forEach((dot, index) => dot.classList.toggle('active', index === current));
-            quoteCard.classList.remove('bump');
-            void quoteCard.offsetWidth;
-            quoteCard.classList.add('bump');
-            toast.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-        });
-
-        const savedTheme = localStorage.getItem('codebloom-theme');
-        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.body.classList.add('dark');
-        }
-
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-            localStorage.setItem('codebloom-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-        });
-    </script>
 </body>
 </html>
