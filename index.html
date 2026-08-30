@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="เว็บไซต์เรียบง่าย สะอาดตา อ่านสบาย">
-    <title>เรียบง่าย — เว็บไซต์ที่สบายตา</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="คู่มือติดตั้ง VoiceStudio ภาษาไทย สำหรับ macOS, Windows, Linux, Docker และการรันจากซอร์ส">
+    <title>ติดตั้ง VoiceStudio — คู่มือภาษาไทย</title>
     <style>
         :root {
-            --bg: #fafaf8;
-            --text: #1c1c1a;
-            --muted: #6b6b66;
-            --line: #e6e6e1;
-            --accent: #2f6f4f;
+            --bg: #f7f4ef;
+            --card: #ffffff;
+            --text: #1f2933;
+            --muted: #64748b;
+            --line: #e7dccd;
+            --accent: #7c3aed;
+            --accent-dark: #5b21b6;
+            --code: #111827;
         }
 
         * { box-sizing: border-box; margin: 0; }
@@ -22,175 +22,286 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: "Prompt", sans-serif;
-            background: var(--bg);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, #ede9fe 0, transparent 36%), var(--bg);
             color: var(--text);
-            line-height: 1.8;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.75;
         }
 
         .wrap {
-            width: min(640px, 100% - 48px);
+            width: min(980px, 100% - 40px);
             margin: 0 auto;
         }
 
         header {
-            padding: 28px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
             border-bottom: 1px solid var(--line);
+            background: rgba(247, 244, 239, .92);
+            backdrop-filter: blur(12px);
         }
 
         header .wrap {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 18px;
+            padding: 18px 0;
         }
 
         .logo {
-            font-weight: 600;
-            text-decoration: none;
             color: var(--text);
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: -.02em;
         }
 
         .logo span { color: var(--accent); }
 
+        nav { display: flex; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+
         nav a {
             color: var(--muted);
+            font-size: .92rem;
+            font-weight: 600;
             text-decoration: none;
-            font-size: .9rem;
-            margin-left: 22px;
-            transition: color .2s;
         }
 
         nav a:hover { color: var(--accent); }
 
-        main { padding: 88px 0 96px; }
+        main { padding: 72px 0 84px; }
 
-        .hero h1 {
-            font-size: clamp(1.9rem, 5vw, 2.6rem);
-            font-weight: 600;
-            line-height: 1.4;
-            letter-spacing: -.01em;
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+            gap: 32px;
+            align-items: center;
         }
 
-        .hero p {
-            margin-top: 18px;
+        .eyebrow {
+            color: var(--accent);
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: .8rem;
+        }
+
+        h1 {
+            max-width: 720px;
+            font-size: clamp(2.15rem, 6vw, 4.25rem);
+            line-height: 1.1;
+            letter-spacing: -.05em;
+        }
+
+        .lead {
+            margin-top: 22px;
             color: var(--muted);
-            font-weight: 300;
-            font-size: 1.05rem;
+            font-size: 1.13rem;
+            max-width: 680px;
         }
+
+        .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
 
         .btn {
-            display: inline-block;
-            margin-top: 32px;
-            padding: 12px 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 999px;
+            padding: 12px 22px;
             background: var(--accent);
             color: #fff;
+            font-weight: 800;
             text-decoration: none;
-            font-size: .95rem;
-            transition: opacity .2s;
+            box-shadow: 0 12px 24px rgba(124, 58, 237, .22);
         }
 
-        .btn:hover { opacity: .85; }
-
-        section { margin-top: 88px; }
-
-        h2 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
-
-        .list { display: grid; gap: 16px; }
-
-        .item {
-            padding: 20px 22px;
-            border: 1px solid var(--line);
-            border-radius: 14px;
+        .btn.secondary {
             background: #fff;
+            color: var(--accent-dark);
+            border: 1px solid var(--line);
+            box-shadow: none;
         }
 
-        .item h3 { font-size: 1rem; font-weight: 500; }
-
-        .item p {
-            font-size: .92rem;
-            color: var(--muted);
-            font-weight: 300;
-            margin-top: 4px;
+        .panel, .card {
+            background: rgba(255, 255, 255, .88);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: 0 18px 48px rgba(15, 23, 42, .08);
         }
 
-        .about p { color: var(--muted); font-weight: 300; }
+        .panel { padding: 26px; }
 
-        .contact a {
-            color: var(--accent);
-            text-decoration: none;
-            border-bottom: 1px solid currentColor;
+        .stat { padding: 16px 0; border-bottom: 1px solid var(--line); }
+        .stat:last-child { border-bottom: 0; }
+        .stat strong { display: block; font-size: 1.6rem; color: var(--accent-dark); }
+        .stat span { color: var(--muted); font-size: .93rem; }
+
+        section { margin-top: 72px; }
+
+        h2 { font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.25; margin-bottom: 18px; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+        .card { padding: 22px; }
+        .card h3 { margin-bottom: 8px; font-size: 1.08rem; }
+        .card p, li { color: var(--muted); }
+
+        .steps { counter-reset: step; display: grid; gap: 16px; }
+        .step { position: relative; padding-left: 58px; }
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 22px;
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #ede9fe;
+            color: var(--accent-dark);
+            font-weight: 900;
+        }
+
+        pre {
+            overflow-x: auto;
+            margin-top: 14px;
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--code);
+            color: #e5e7eb;
+            line-height: 1.55;
+        }
+
+        code { font-family: "SFMono-Regular", Consolas, monospace; }
+
+        .note {
+            margin-top: 18px;
+            padding: 16px 18px;
+            border-left: 4px solid var(--accent);
+            border-radius: 14px;
+            background: #f3e8ff;
+            color: #3b0764;
         }
 
         footer {
             border-top: 1px solid var(--line);
             padding: 26px 0;
-            font-size: .85rem;
             color: var(--muted);
-            font-weight: 300;
+            font-size: .92rem;
+        }
+
+        @media (max-width: 780px) {
+            header .wrap, .hero { display: block; }
+            nav { justify-content: flex-start; margin-top: 10px; }
+            .panel { margin-top: 28px; }
+            .grid { grid-template-columns: 1fr; }
+            .step { padding-left: 0; padding-top: 58px; }
+            .step::before { top: 18px; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="wrap">
-            <a class="logo" href="#">เรียบ<span>ง่าย</span></a>
+            <a class="logo" href="#">Voice<span>Studio</span> Install</a>
             <nav>
-                <a href="#about">เกี่ยวกับ</a>
-                <a href="#work">ผลงาน</a>
-                <a href="#contact">ติดต่อ</a>
+                <a href="#requirements">สเปก</a>
+                <a href="#install">ติดตั้ง</a>
+                <a href="#source">รันจากซอร์ส</a>
+                <a href="#troubleshoot">แก้ปัญหา</a>
             </nav>
         </div>
     </header>
 
     <main class="wrap">
-
-        <div class="hero">
-            <h1>สวัสดีครับ 👋<br>นี่คือเว็บไซต์ที่เรียบง่ายและสบายตา</h1>
-            <p>บางครั้งสิ่งที่ดีที่สุดก็คือสิ่งที่เรียบง่ายที่สุด — ไม่ต้องมีอะไรมาก แค่ชัดเจน อ่านง่าย และตรงประเด็น</p>
-            <a class="btn" href="#about">เริ่มเลย</a>
-        </div>
-
-        <section id="about" class="about">
-            <h2>เกี่ยวกับ</h2>
-            <p>เว็บไซต์นี้ถูกออกแบบด้วยแนวคิด "น้อยแต่มาก" ใช้เพียง HTML และ CSS ล้วน ๆ ไม่มี JavaScript ไม่มีสิ่งรบกวน โหลดเร็ว และใช้งานได้ดีบนทุกอุปกรณ์</p>
+        <section class="hero" aria-labelledby="title">
+            <div>
+                <p class="eyebrow">คู่มือภาษาไทย</p>
+                <h1 id="title">ติดตั้ง VoiceStudio สำหรับสร้างเสียงและโคลนเสียงแบบ Local-first</h1>
+                <p class="lead">VoiceStudio คือแอปโอเพนซอร์สสำหรับ voice cloning, voice design, dubbing, dictation, transcription และ audiobook โดยทำงานบนเครื่องเป็นหลัก ไม่ต้องมีบัญชีหรือ API key สำหรับ workflow หลัก</p>
+                <div class="actions">
+                    <a class="btn" href="https://github.com/debpalash/VoiceStudio/releases/latest">ดาวน์โหลดรุ่นล่าสุด</a>
+                    <a class="btn secondary" href="https://github.com/debpalash/VoiceStudio">เปิด GitHub</a>
+                </div>
+            </div>
+            <aside class="panel" aria-label="ข้อมูลย่อ">
+                <div class="stat"><strong>16 TTS</strong><span>เอนจินอ่านข้อความเป็นเสียง</span></div>
+                <div class="stat"><strong>11 ASR</strong><span>เอนจินถอดเสียงพูดเป็นข้อความ</span></div>
+                <div class="stat"><strong>646 ภาษา</strong><span>แคตตาล็อกภาษาขึ้นกับเอนจินที่เลือก</span></div>
+            </aside>
         </section>
 
-        <section id="work">
-            <h2>ผลงาน</h2>
-            <div class="list">
-                <div class="item">
-                    <h3>โปรเจกต์แรก</h3>
-                    <p>คำอธิบายสั้น ๆ เกี่ยวกับผลงานชิ้นนี้ แก้ไขข้อความได้ตามต้องการ</p>
-                </div>
-                <div class="item">
-                    <h3>โปรเจกต์ที่สอง</h3>
-                    <p>อีกหนึ่งผลงานที่น่าภูมิใจ ใส่รายละเอียดเพิ่มเติมได้ที่นี่</p>
-                </div>
-                <div class="item">
-                    <h3>โปรเจกต์ที่สาม</h3>
-                    <p>พื้นที่สำหรับผลงานชิ้นถัดไปของคุณ</p>
-                </div>
+        <section id="requirements">
+            <h2>ก่อนติดตั้งต้องเตรียมอะไรบ้าง</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>ระบบปฏิบัติการที่รองรับ</h3>
+                    <p>macOS 13.3+ บน Apple Silicon, Windows 10/11 x64 และ Linux x86_64 ที่มี glibc 2.39 ขึ้นไป</p>
+                </article>
+                <article class="card">
+                    <h3>ฮาร์ดแวร์แนะนำ</h3>
+                    <p>ขั้นต่ำ RAM 8 GB และพื้นที่ว่าง 10 GB; แนะนำ RAM 16 GB+, SSD 20 GB+ และ GPU NVIDIA CUDA หรือ Apple Silicon ถ้าต้องการความเร็ว</p>
+                </article>
+            </div>
+            <p class="note">หมายเหตุ: CPU mode ใช้งานได้ แต่การสร้างเสียงอาจช้ากว่า GPU มาก และโมเดลเสริมบางตัวอาจต้องใช้ VRAM สูงกว่า 8 GB</p>
+        </section>
+
+        <section id="install">
+            <h2>วิธีติดตั้งแบบแนะนำ</h2>
+            <div class="steps">
+                <article class="card step">
+                    <h3>ดาวน์โหลดแพ็กเกจให้ตรงกับเครื่อง</h3>
+                    <p>ไปที่หน้า Releases ล่าสุด แล้วเลือก DMG สำหรับ macOS Apple Silicon, MSI สำหรับ Windows x64 หรือ AppImage สำหรับ Linux x86_64</p>
+                </article>
+                <article class="card step">
+                    <h3>เปิดแอปและปล่อยให้ตั้งค่าอัตโนมัติ</h3>
+                    <p>การเปิดครั้งแรกจะสร้าง Python environment ที่จัดการโดยแอป และดาวน์โหลดโมเดลเริ่มต้นให้เอง หลังจากนั้นแอปจะใช้ environment และโมเดลเดิมซ้ำ</p>
+                </article>
+                <article class="card step">
+                    <h3>สร้างเสียงแรก</h3>
+                    <p>เปิด Voice Cloning, เพิ่มตัวอย่างเสียงที่สะอาด 5–15 วินาที, ใส่ข้อความ เลือกภาษา แล้วกด Generate</p>
+                </article>
             </div>
         </section>
 
-        <section id="contact" class="contact">
-            <h2>ติดต่อ</h2>
-            <p>สนใจพูดคุยหรือร่วมงานกัน ส่งอีเมลมาได้ที่ <a href="mailto:hello@example.com">hello@example.com</a></p>
+        <section id="source">
+            <h2>รันจากซอร์สสำหรับนักพัฒนา</h2>
+            <article class="card">
+                <p>ติดตั้ง development prerequisites ของโปรเจกต์ก่อน จากนั้นใช้คำสั่งต่อไปนี้เพื่อ clone และเปิด desktop app:</p>
+                <pre><code>git clone https://github.com/debpalash/VoiceStudio.git
+cd VoiceStudio
+bun install
+bun run desktop</code></pre>
+                <p class="note">ถ้าต้องการเปิดเฉพาะ browser UI ให้ใช้ <code>bun run dev</code> แทน</p>
+            </article>
         </section>
 
+        <section id="troubleshoot">
+            <h2>ถ้าติดตั้งไม่สำเร็จ</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>ตรวจระบบอัตโนมัติ</h3>
+                    <p>ในแอปให้ไปที่ Settings → About → Run self-check หรือรันคำสั่ง diagnose แบบ deep จากโฟลเดอร์โปรเจกต์</p>
+                    <pre><code>uv run python backend/main.py --diagnose --deep</code></pre>
+                </article>
+                <article class="card">
+                    <h3>ข้อควรรู้เฉพาะแพลตฟอร์ม</h3>
+                    <ul>
+                        <li>macOS ต้องคลิกขวา → Open เพื่ออนุญาตครั้งแรก</li>
+                        <li>Intel Mac ไม่รองรับ local Python backend ให้ใช้ remote backend แทน</li>
+                        <li>Linux ต้องตรวจ glibc 2.39+ ก่อนใช้ AppImage</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
     </main>
 
     <footer>
-        <div class="wrap">© 2026 เรียบง่าย — สร้างด้วยใจ</div>
+        <div class="wrap">อ้างอิงจาก debpalash/VoiceStudio — อัปเดตข้อมูลติดตั้งและสเปกตาม README ของโปรเจกต์</div>
     </footer>
-
 </body>
 </html>
